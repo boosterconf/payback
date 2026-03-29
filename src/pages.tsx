@@ -55,7 +55,7 @@ export const FormPage: FC<{
     <Card user={user}>
       <div class="card-header">
         <h1>Submit Receipt</h1>
-        <p class="text-muted">Upload a receipt to get reimbursed for expenses.</p>
+        <p class="text-muted">Upload a receipt to get reimbursed for expenses. If you paid with a Booster VISA card then ignore this and e-mail the reciept to <a href="mailto:foreningen-boosterkonferansen@bilag.fiken.no">foreningen-boosterkonferansen@bilag.fiken.no</a>.</p>
       </div>
 
       <form method="post" action="/submit" enctype="multipart/form-data">
@@ -89,7 +89,7 @@ export const FormPage: FC<{
             id="description"
             name="description"
             type="text"
-            placeholder="What was the expense for?"
+            placeholder="What was the expense for? (optional)"
             maxlength={150}
           />
         </div>
@@ -128,16 +128,10 @@ export const SuccessPage: FC<{ user: User }> = ({ user }) => (
 
 export const NotFoundPage: FC = () => (
   <Layout>
-    <Card>
-      <div class="feedback">
-        <div class="feedback-icon feedback-icon--error">?</div>
-        <h2>Page not found</h2>
-        <p>The page you're looking for doesn't exist.</p>
-        <a href="/" class="btn btn-outline">
-          Go home
-        </a>
-      </div>
-    </Card>
+    <img src="/notfound.gif" alt="Not found" class="login-gif" />
+    <a href="/" class="btn btn-outline" style="max-width:250px;width:100%">
+      Go home
+    </a>
   </Layout>
 );
 
