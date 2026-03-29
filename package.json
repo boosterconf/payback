@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {},
   "devDependencies": {
+    "@tsconfig/bun": "^1.0.10",
     "@types/bun": "latest"
   },
   "peerDependencies": {

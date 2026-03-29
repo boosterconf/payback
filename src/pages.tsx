@@ -1,4 +1,5 @@
 import type { FC, PropsWithChildren } from "hono/jsx";
+import type { User } from "./middleware";
 
 export const Layout: FC<PropsWithChildren> = ({ children }) => (
   <html lang="en">
@@ -6,6 +7,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => (
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>Booster Payback</title>
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       <link rel="stylesheet" href="/styles.css" />
     </head>
     <body>
@@ -15,8 +17,26 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => (
   </html>
 );
 
+const Card: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
+  <div class="card">
+    {children}
+    {user && (
+      <div class="card-footer">
+        <div class="user-info">
+          <img src={user.avatar} alt="" class="avatar" />
+          <span class="text-muted">{user.name}</span>
+        </div>
+        <a href="/auth/logout" class="btn btn-ghost btn-sm">
+          Sign out
+        </a>
+      </div>
+    )}
+  </div>
+);
+
 export const LoginPage: FC = () => (
   <Layout>
+    <img src="/money.gif" alt="Money" class="login-gif" />
     <a href="/auth/login" class="btn btn-github">
       <img src="/github.svg" alt="" aria-hidden="true" />
       Sign in with GitHub
@@ -25,33 +45,38 @@ export const LoginPage: FC = () => (
 );
 
 export const FormPage: FC<{
-  user: string;
-  projects: ReadonlyArray<{ id: string; name: string }>;
-  error?: string;
-}> = ({ user, projects, error }) => (
+  user: User;
+  sections: ReadonlyArray<{ id: string; name: string }>;
+  expenseTypes: ReadonlyArray<{ id: string; name: string }>;
+}> = ({ user, sections, expenseTypes }) => (
   <Layout>
-    <div class="card">
+    <Card user={user}>
       <div class="card-header">
         <h1>Submit Receipt</h1>
-        <div class="card-header-actions">
-          <span class="text-muted">{user}</span>
-          <a href="/auth/logout" class="btn btn-ghost btn-sm">
-            Sign out
-          </a>
-        </div>
+        <p class="text-muted">Upload a receipt to get reimbursed for expenses.</p>
       </div>
-
-      {error && <p class="error-text">{error}</p>}
 
       <form method="post" action="/submit" enctype="multipart/form-data">
         <div class="form-group">
-          <label for="project">Project</label>
-          <select id="project" name="project" required>
+          <label for="section">Section</label>
+          <select id="section" name="section" required>
             <option value="" disabled selected>
-              Select a project…
+              Select a section…
             </option>
-            {projects.map((p) => (
-              <option value={p.id}>{p.name}</option>
+            {sections.map((s) => (
+              <option value={s.id}>{s.name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="expense-type">Expense type</label>
+          <select id="expense-type" name="expenseType" required>
+            <option value="" disabled selected>
+              Select an expense type…
+            </option>
+            {expenseTypes.map((t) => (
+              <option value={t.id}>{t.name}</option>
             ))}
           </select>
         </div>
@@ -64,7 +89,6 @@ export const FormPage: FC<{
             type="text"
             placeholder="What was the expense for?"
             maxlength={150}
-            required
           />
         </div>
 
@@ -74,7 +98,7 @@ export const FormPage: FC<{
             id="receipt"
             name="receipt"
             type="file"
-            accept=".jpg,.jpeg,.png,.heic,.pdf"
+            accept=".jpg,.jpeg,.png,.pdf"
             required
           />
         </div>
@@ -83,28 +107,41 @@ export const FormPage: FC<{
           Submit receipt
         </button>
       </form>
-    </div>
+    </Card>
   </Layout>
 );
 
-export const SuccessPage: FC = () => (
+export const SuccessPage: FC<{ user: User }> = ({ user }) => (
   <Layout>
-    <div class="card">
+    <Card user={user}>
       <div class="feedback">
-        <div class="feedback-icon feedback-icon--success">✓</div>
-        <h2>Receipt submitted</h2>
-        <p>Your receipt has been submitted successfully.</p>
-        <a href="/" class="btn btn-outline">
+        <img src="/powerball.gif" alt="Money" class="feedback-gif" />
+        <a href="/" class="btn btn-outline feedback-btn">
           Submit another
         </a>
       </div>
-    </div>
+    </Card>
   </Layout>
 );
 
-export const ErrorPage: FC<{ message: string }> = ({ message }) => (
+export const NotFoundPage: FC = () => (
   <Layout>
-    <div class="card">
+    <Card>
+      <div class="feedback">
+        <div class="feedback-icon feedback-icon--error">?</div>
+        <h2>Page not found</h2>
+        <p>The page you're looking for doesn't exist.</p>
+        <a href="/" class="btn btn-outline">
+          Go home
+        </a>
+      </div>
+    </Card>
+  </Layout>
+);
+
+export const ErrorPage: FC<{ message: string; user?: User }> = ({ message, user }) => (
+  <Layout>
+    <Card user={user}>
       <div class="feedback">
         <div class="feedback-icon feedback-icon--error">!</div>
         <h2>Something went wrong</h2>
@@ -113,6 +150,6 @@ export const ErrorPage: FC<{ message: string }> = ({ message }) => (
           Try again
         </a>
       </div>
-    </div>
+    </Card>
   </Layout>
 );
