@@ -1,36 +1,49 @@
 import { Hono } from "hono";
 import { getSignedCookie, setSignedCookie, deleteCookie } from "hono/cookie";
 import { githubAuth } from "@hono/oauth-providers/github";
-import type { Context } from "hono";
+import type { MiddlewareHandler } from "hono";
 import { projects } from "./projects";
 import { LoginPage, FormPage, SuccessPage, ErrorPage } from "./pages";
+import { COOKIE_SECRET, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./config";
 
-const COOKIE_SECRET = process.env.COOKIE_SECRET || "dev-secret-change-me";
+type Env = { Variables: { user: string } };
 
-const app = new Hono();
+const app = new Hono<Env>();
 
-async function getUser(c: Context) {
+async function getSessionUser(c: Parameters<MiddlewareHandler>[0]) {
   return (await getSignedCookie(c, COOKIE_SECRET, "session")) || null;
 }
 
+const requireUser: MiddlewareHandler<Env> = async (c, next) => {
+  const user = await getSessionUser(c);
+  if (!user) return c.redirect("/login");
+  c.set("user", user);
+  return next();
+}
+
+// Login page
+app.get("/login", async (c) => {
+  const user = await getSessionUser(c);
+  if (user) return c.redirect("/");
+  return c.html(<LoginPage />);
+});
+
 // Main page
-app.get("/", async (c) => {
-  const user = await getUser(c);
-  if (!user) return c.html(<LoginPage />);
+app.get("/", requireUser, (c) => {
+  return c.html(<FormPage user={c.get("user")} projects={projects} />);
+});
 
-  if (c.req.query("success") !== undefined) {
-    return c.html(<SuccessPage />);
-  }
-
-  return c.html(<FormPage user={user} projects={projects} />);
+// Success page
+app.get("/success", requireUser, (c) => {
+  return c.html(<SuccessPage />);
 });
 
 // GitHub OAuth login
 app.get(
   "/auth/login",
   githubAuth({
-    client_id: process.env.GITHUB_CLIENT_ID,
-    client_secret: process.env.GITHUB_CLIENT_SECRET,
+    client_id: GITHUB_CLIENT_ID,
+    client_secret: GITHUB_CLIENT_SECRET,
   }),
   async (c) => {
     const githubUser = c.get("user-github");
@@ -59,9 +72,8 @@ app.get("/auth/logout", (c) => {
 });
 
 // Submit receipt
-app.post("/submit", async (c) => {
-  const user = await getUser(c);
-  if (!user) return c.redirect("/");
+app.post("/submit", requireUser, async (c) => {
+  const user = c.get("user");
 
   const body = await c.req.parseBody();
   const project = body["project"];
@@ -94,7 +106,7 @@ app.post("/submit", async (c) => {
     fileSize: file.size,
   });
 
-  return c.redirect("/?success");
+  return c.redirect("/success");
 });
 
 export default app;
