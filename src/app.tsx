@@ -29,8 +29,8 @@ app.get("/", async (c) => {
 app.get(
   "/auth/login",
   githubAuth({
-    client_id: process.env.GITHUB_ID,
-    client_secret: process.env.GITHUB_SECRET,
+    client_id: process.env.GITHUB_CLIENT_ID,
+    client_secret: process.env.GITHUB_CLIENT_SECRET,
   }),
   async (c) => {
     const githubUser = c.get("user-github");
