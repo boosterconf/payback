@@ -2,7 +2,10 @@
   "name": "booster-payback-time",
   "type": "module",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "build": "echo 'No build step'",
+    "check": "tsc --noEmit"
+  },
   "devDependencies": {
     "@tsconfig/bun": "^1.0.10",
     "@types/bun": "latest"
