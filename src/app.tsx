@@ -6,7 +6,7 @@ import { projects } from "./projects";
 import { LoginPage, FormPage, SuccessPage, ErrorPage } from "./pages";
 
 const COOKIE_SECRET = process.env.COOKIE_SECRET || "dev-secret-change-me";
-const GITHUB_ORG = process.env.GITHUB_ORG || "boosterconf";
+const GITHUB_ORG = "boosterconf";
 
 const app = new Hono();
 
