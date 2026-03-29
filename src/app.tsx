@@ -6,7 +6,6 @@ import { projects } from "./projects";
 import { LoginPage, FormPage, SuccessPage, ErrorPage } from "./pages";
 
 const COOKIE_SECRET = process.env.COOKIE_SECRET || "dev-secret-change-me";
-const GITHUB_ORG = "boosterconf";
 
 const app = new Hono();
 
@@ -16,13 +15,6 @@ async function getUser(c: Context) {
 
 // Main page
 app.get("/", async (c) => {
-  const error = c.req.query("error");
-  if (error === "access-denied") {
-    return c.html(
-      <ErrorPage message="You must be a member of the boosterconf GitHub organization." />,
-    );
-  }
-
   const user = await getUser(c);
   if (!user) return c.html(<LoginPage />);
 
@@ -39,24 +31,12 @@ app.get(
   githubAuth({
     client_id: process.env.GITHUB_ID,
     client_secret: process.env.GITHUB_SECRET,
-    scope: ["read:org"],
-    oauthApp: true,
   }),
   async (c) => {
-    const token = c.get("token");
     const githubUser = c.get("user-github");
 
-    if (!githubUser || !token) {
+    if (!githubUser) {
       return c.html(<ErrorPage message="GitHub authentication failed." />);
-    }
-
-    const orgRes = await fetch(
-      `https://api.github.com/user/memberships/orgs/${GITHUB_ORG}`,
-      { headers: { Authorization: `Bearer ${token.token}` } },
-    );
-
-    if (!orgRes.ok) {
-      return c.redirect("/?error=access-denied");
     }
 
     const name = githubUser.name || githubUser.login || "unknown";
