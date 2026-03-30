@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { handleUpload } from "@vercel/blob/client";
 import { sections, expenseTypes } from "./sections";
 import { FormPage, SuccessPage, ErrorPage } from "./pages";
 import { requireUser, type Env } from "./middleware";
@@ -13,50 +14,62 @@ form.get("/success", requireUser, (c) => {
   return c.html(<SuccessPage user={c.get("user")} />);
 });
 
+form.get("/error", requireUser, (c) => {
+  const message = c.req.query("message") || "Something went wrong.";
+  return c.html(<ErrorPage message={message} user={c.get("user")} />);
+});
+
+form.post("/upload/handle", requireUser, async (c) => {
+  const body = await c.req.json();
+
+  const jsonResponse = await handleUpload({
+    body,
+    request: c.req.raw,
+    onBeforeGenerateToken: async () => ({
+      allowedContentTypes: ["image/jpeg", "image/png", "application/pdf"],
+      maximumSizeInBytes: 5 * 1024 * 1024,
+    }),
+    onUploadCompleted: async () => {},
+  });
+
+  return c.json(jsonResponse);
+});
+
 form.post("/submit", requireUser, async (c) => {
   const user = c.get("user");
 
-  const body = await c.req.parseBody();
-  const section = body["section"];
-  const expenseType = body["expenseType"];
-  const description = body["description"];
-  const receipt = body["receipt"];
+  const body = await c.req.json();
+  const { section, expenseType, description, receiptUrl } = body as Record<string, string>;
 
   const validSectionIds: readonly string[] = sections.map((s) => s.id);
   const validExpenseTypeIds: readonly string[] = expenseTypes.map((t) => t.id);
-  const allowedFileTypes = ["image/jpeg", "image/png", "application/pdf"];
-  const maxFileSize = 5 * 1024 * 1024;
 
   const error =
-    typeof section !== "string" || typeof expenseType !== "string" || !(receipt instanceof File)
+    typeof section !== "string" || typeof expenseType !== "string" || typeof receiptUrl !== "string"
       ? "All fields are required."
       : !validSectionIds.includes(section)
         ? "Invalid section."
         : !validExpenseTypeIds.includes(expenseType)
           ? "Invalid expense type."
-          : !allowedFileTypes.includes((receipt as File).type)
-            ? "Invalid file type. Use JPEG, PNG, or PDF."
-            : (receipt as File).size > maxFileSize
-              ? "File is too large. Maximum size is 5 MB."
-              : null;
+          : !receiptUrl.includes(".blob.vercel-storage.com/")
+            ? "Invalid receipt URL."
+            : null;
 
   if (error) {
-    return c.html(<ErrorPage message={error} user={user} />);
+    return c.json({ error }, 400);
   }
-
-  const file = receipt as File;
 
   console.log("Receipt submitted:", {
     user: user.name,
     section,
     expenseType,
-    description,
-    fileName: file.name,
-    fileType: file.type,
-    fileSize: file.size,
+    description: description || "",
+    receiptUrl,
   });
 
-  return c.redirect("/success", 303);
+  await new Promise((r) => setTimeout(r, 2000));
+
+  return c.json({ ok: true });
 });
 
 export default form;

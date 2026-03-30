@@ -10,6 +10,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => (
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       <link rel="preload" href="/powerball.gif" as="image" />
       <link rel="preload" href="/money.gif" as="image" />
+      <link rel="preload" href="/error.gif" as="image" />
       <link rel="stylesheet" href="/styles.css" />
     </head>
     <body>
@@ -58,7 +59,7 @@ export const FormPage: FC<{
         <p class="text-muted">Upload a receipt to get reimbursed for expenses. If you paid with a Booster VISA card then ignore this and e-mail the reciept to <a href="mailto:foreningen-boosterkonferansen@bilag.fiken.no">foreningen-boosterkonferansen@bilag.fiken.no</a>.</p>
       </div>
 
-      <form method="post" action="/submit" enctype="multipart/form-data">
+      <form id="receipt-form">
         <div class="form-group">
           <label for="section">Section</label>
           <select id="section" name="section" required>
@@ -129,7 +130,7 @@ export const SuccessPage: FC<{ user: User }> = ({ user }) => (
 export const NotFoundPage: FC = () => (
   <Layout>
     <img src="/notfound.gif" alt="Not found" class="login-gif" />
-    <a href="/" class="btn btn-outline" style="max-width:250px;width:100%">
+    <a href="/" class="btn btn-outline login-gif">
       Go home
     </a>
   </Layout>
@@ -139,10 +140,9 @@ export const ErrorPage: FC<{ message: string; user?: User }> = ({ message, user 
   <Layout>
     <Card user={user}>
       <div class="feedback">
-        <div class="feedback-icon feedback-icon--error">!</div>
-        <h2>Something went wrong</h2>
+        <img src="/error.gif" alt="Error" class="feedback-gif" />
         <p>{message}</p>
-        <a href="/" class="btn btn-outline">
+        <a href="/" class="btn btn-outline feedback-btn">
           Try again
         </a>
       </div>
