@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import { handleUpload } from "@vercel/blob/client";
-import { getRelatedToOptions, getExpenseTypes } from "./db";
+import { getFormOptions } from "./db";
 import { FormPage, SuccessPage, ErrorPage } from "./pages";
 import { requireUser, type Env } from "./middleware";
 
 const form = new Hono<Env>();
 
 form.get("/", requireUser, async (c) => {
-  const [relatedToOptions, expenseTypes] = await Promise.all([getRelatedToOptions(), getExpenseTypes()]);
+  const { relatedToOptions, expenseTypes } = await getFormOptions();
   return c.html(<FormPage user={c.get("user")} relatedToOptions={relatedToOptions} expenseTypes={expenseTypes} />);
 });
 
@@ -42,7 +42,7 @@ form.post("/submit", requireUser, async (c) => {
   const body = await c.req.json();
   const { relatedTo, expenseType, description, receiptUrl } = body as Record<string, string>;
 
-  const [relatedToOptions, expenseTypes] = await Promise.all([getRelatedToOptions(), getExpenseTypes()]);
+  const { relatedToOptions, expenseTypes } = await getFormOptions();
   const validRelatedToIds = relatedToOptions.map((s) => s.id);
   const validExpenseTypeIds = expenseTypes.map((t) => t.id);
 

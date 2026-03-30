@@ -16,12 +16,13 @@ const OTHER_EXPENSE_TYPE: Option = {
   name: "Other... Whatever... Papasan?",
 };
 
-export async function getRelatedToOptions(): Promise<Option[]> {
-  const rows = await sql()`SELECT id, name FROM related_to_options ORDER BY sort_order`;
-  return [...(rows as Option[]), OTHER_RELATED_TO];
-}
-
-export async function getExpenseTypes(): Promise<Option[]> {
-  const rows = await sql()`SELECT id, name FROM expense_types ORDER BY sort_order`;
-  return [...(rows as Option[]), OTHER_EXPENSE_TYPE];
+export async function getFormOptions() {
+  const [relatedToRows, expenseTypeRows] = await sql().transaction([
+    sql()`SELECT id, name FROM related_to_options ORDER BY sort_order`,
+    sql()`SELECT id, name FROM expense_types ORDER BY sort_order`,
+  ]);
+  return {
+    relatedToOptions: [...(relatedToRows as Option[]), OTHER_RELATED_TO],
+    expenseTypes: [...(expenseTypeRows as Option[]), OTHER_EXPENSE_TYPE],
+  };
 }
