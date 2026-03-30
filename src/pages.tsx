@@ -49,9 +49,9 @@ export const LoginPage: FC = () => (
 
 export const FormPage: FC<{
   user: User;
-  sections: ReadonlyArray<{ id: string; name: string }>;
+  relatedToOptions: ReadonlyArray<{ id: string; name: string }>;
   expenseTypes: ReadonlyArray<{ id: string; name: string }>;
-}> = ({ user, sections, expenseTypes }) => (
+}> = ({ user, relatedToOptions, expenseTypes }) => (
   <Layout>
     <Card user={user}>
       <div class="card-header">
@@ -61,12 +61,12 @@ export const FormPage: FC<{
 
       <form id="receipt-form">
         <div class="form-group">
-          <label for="section">Section</label>
-          <select id="section" name="section" required>
+          <label for="related-to">Related to</label>
+          <select id="related-to" name="relatedTo" required>
             <option value="" disabled selected>
-              Select a section…
+              Select…
             </option>
-            {sections.map((s) => (
+            {relatedToOptions.map((s) => (
               <option value={s.id}>{s.name}</option>
             ))}
           </select>

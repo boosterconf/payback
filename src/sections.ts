@@ -1,4 +1,4 @@
-export const sections = [
+export const relatedToOptions = [
   { id: "booster-meetings", name: "Comitee meetings" },
   { id: "social", name: "Social gatherings" },
   { id: "conference-dinner", name: "Conference dinner" },

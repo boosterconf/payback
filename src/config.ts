@@ -8,4 +8,5 @@ export const config = {
   get GITHUB_CLIENT_ID() { return env("GITHUB_CLIENT_ID"); },
   get GITHUB_CLIENT_SECRET() { return env("GITHUB_CLIENT_SECRET"); },
   get COOKIE_SECRET() { return env("COOKIE_SECRET"); },
+  get DATABASE_URL() { return env("DATABASE_URL"); },
 };

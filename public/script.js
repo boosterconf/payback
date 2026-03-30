@@ -25,7 +25,7 @@ if (form) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          section: form.querySelector('[name="section"]').value,
+          relatedTo: form.querySelector('[name="relatedTo"]').value,
           expenseType: form.querySelector('[name="expenseType"]').value,
           description: form.querySelector('[name="description"]').value,
           receiptUrl: blob.url,

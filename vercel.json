@@ -1,5 +1,5 @@
 {
     "bunVersion": "1.x",
-    "regions": ["arn1"],
+    "regions": ["fra1"],
     "crons": [{ "path": "/cron/cleanup", "schedule": "0 3 * * *" }]
 }

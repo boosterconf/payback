@@ -1,13 +1,14 @@
 import { Hono } from "hono";
 import { handleUpload } from "@vercel/blob/client";
-import { sections, expenseTypes } from "./sections";
+import { getRelatedToOptions, getExpenseTypes } from "./db";
 import { FormPage, SuccessPage, ErrorPage } from "./pages";
 import { requireUser, type Env } from "./middleware";
 
 const form = new Hono<Env>();
 
-form.get("/", requireUser, (c) => {
-  return c.html(<FormPage user={c.get("user")} sections={sections} expenseTypes={expenseTypes} />);
+form.get("/", requireUser, async (c) => {
+  const [relatedToOptions, expenseTypes] = await Promise.all([getRelatedToOptions(), getExpenseTypes()]);
+  return c.html(<FormPage user={c.get("user")} relatedToOptions={relatedToOptions} expenseTypes={expenseTypes} />);
 });
 
 form.get("/success", requireUser, (c) => {
@@ -39,16 +40,17 @@ form.post("/submit", requireUser, async (c) => {
   const user = c.get("user");
 
   const body = await c.req.json();
-  const { section, expenseType, description, receiptUrl } = body as Record<string, string>;
+  const { relatedTo, expenseType, description, receiptUrl } = body as Record<string, string>;
 
-  const validSectionIds: readonly string[] = sections.map((s) => s.id);
-  const validExpenseTypeIds: readonly string[] = expenseTypes.map((t) => t.id);
+  const [relatedToOptions, expenseTypes] = await Promise.all([getRelatedToOptions(), getExpenseTypes()]);
+  const validRelatedToIds = relatedToOptions.map((s) => s.id);
+  const validExpenseTypeIds = expenseTypes.map((t) => t.id);
 
   const error =
-    typeof section !== "string" || typeof expenseType !== "string" || typeof receiptUrl !== "string"
+    typeof relatedTo !== "string" || typeof expenseType !== "string" || typeof receiptUrl !== "string"
       ? "All fields are required."
-      : !validSectionIds.includes(section)
-        ? "Invalid section."
+      : !validRelatedToIds.includes(relatedTo)
+        ? "Invalid selection."
         : !validExpenseTypeIds.includes(expenseType)
           ? "Invalid expense type."
           : !receiptUrl.includes(".blob.vercel-storage.com/")
@@ -61,7 +63,7 @@ form.post("/submit", requireUser, async (c) => {
 
   console.log("Receipt submitted:", {
     user: user.name,
-    section,
+    relatedTo,
     expenseType,
     description: description || "",
     receiptUrl,
