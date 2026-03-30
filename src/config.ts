@@ -9,4 +9,5 @@ export const config = {
   get GITHUB_CLIENT_SECRET() { return env("GITHUB_CLIENT_SECRET"); },
   get COOKIE_SECRET() { return env("COOKIE_SECRET"); },
   get DATABASE_URL() { return env("DATABASE_URL"); },
+  get NEON_PROJECT_ID() { return env("NEON_PROJECT_ID"); },
 };
