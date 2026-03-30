@@ -14,7 +14,12 @@ if (form) {
     try {
       var { upload } = await import("/blob-client.js");
 
-      var blob = await upload(file.name, file, {
+      var relatedTo = form.querySelector('[name="relatedTo"]').value;
+      var expenseType = form.querySelector('[name="expenseType"]').value;
+      var ext = file.name.includes(".") ? file.name.substring(file.name.lastIndexOf(".")) : "";
+      var path = relatedTo + "/" + expenseType + "/" + crypto.randomUUID() + ext;
+
+      var blob = await upload(path, file, {
         access: "private",
         handleUploadUrl: "/upload/handle",
       });
@@ -25,8 +30,8 @@ if (form) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          relatedTo: form.querySelector('[name="relatedTo"]').value,
-          expenseType: form.querySelector('[name="expenseType"]').value,
+          relatedTo: relatedTo,
+          expenseType: expenseType,
           description: form.querySelector('[name="description"]').value,
           receiptUrl: blob.url,
         }),

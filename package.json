@@ -5,7 +5,8 @@
   "scripts": {
     "build": "echo 'No build step'",
     "check": "tsc --noEmit",
-    "dev": "vercel env pull .env.local --yes && bun --hot src/dev.ts"
+    "dev": "vercel env pull .env.local --yes && bun --hot src/dev.ts",
+    "bundle:blob": "bunx esbuild node_modules/@vercel/blob/dist/client.js --bundle --format=esm --minify --outfile=public/blob-client.js"
   },
   "devDependencies": {
     "@tsconfig/bun": "^1.0.10",

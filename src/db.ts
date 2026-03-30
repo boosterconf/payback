@@ -26,3 +26,10 @@ export async function getFormOptions() {
     expenseTypes: [...(expenseTypeRows as Option[]), OTHER_EXPENSE_TYPE],
   };
 }
+
+export async function getFikenContactId(githubUserId: number): Promise<string | null> {
+  const rows = await sql()`
+    SELECT fiken_contact_id FROM user_fiken_mapping WHERE github_user_id = ${githubUserId}
+  `;
+  return rows.length > 0 ? (rows[0] as { fiken_contact_id: string }).fiken_contact_id : null;
+}

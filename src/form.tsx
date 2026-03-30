@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { handleUpload } from "@vercel/blob/client";
-import { getFormOptions } from "./db";
+import { getFormOptions, getFikenContactId } from "./db";
 import { FormPage, SuccessPage, ErrorPage } from "./pages";
 import { requireUser, type Env } from "./middleware";
 
@@ -43,6 +43,7 @@ form.post("/submit", requireUser, async (c) => {
   const { relatedTo, expenseType, description, receiptUrl } = body as Record<string, string>;
 
   const { relatedToOptions, expenseTypes } = await getFormOptions();
+  const fikenContactId = await getFikenContactId(user.id);
   const validRelatedToIds = relatedToOptions.map((s) => s.id);
   const validExpenseTypeIds = expenseTypes.map((t) => t.id);
 
@@ -63,6 +64,7 @@ form.post("/submit", requireUser, async (c) => {
 
   console.log("Receipt submitted:", {
     user: user.name,
+    fikenContactId,
     relatedTo,
     expenseType,
     description: description || "",

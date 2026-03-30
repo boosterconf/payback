@@ -14,6 +14,4 @@ app.route("/", form);
 
 app.notFound(notFound);
 
-
-console.log("stRRT");
 export default app;

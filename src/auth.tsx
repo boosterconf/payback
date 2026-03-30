@@ -24,9 +24,10 @@ auth.get("/login", githubAuth({
       return c.html(<ErrorPage message="GitHub authentication failed." />);
     }
 
+    const id = githubUser.id;
     const name = githubUser.name || githubUser.login || "unknown";
     const avatar = githubUser.avatar_url || "";
-    await setSignedCookie(c, "session", JSON.stringify({ name, avatar }), config.COOKIE_SECRET, {
+    await setSignedCookie(c, "session", JSON.stringify({ id, name, avatar }), config.COOKIE_SECRET, {
       httpOnly: true,
       secure: c.req.url.startsWith("https"),
       sameSite: "Lax",

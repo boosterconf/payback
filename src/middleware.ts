@@ -2,7 +2,7 @@ import { getSignedCookie } from "hono/cookie";
 import type { MiddlewareHandler } from "hono";
 import { config } from "./config";
 
-export type User = { name: string; avatar: string };
+export type User = { id: number; name: string; avatar: string };
 export type Env = { Variables: { user: User } };
 
 export async function getSessionUser(c: Parameters<MiddlewareHandler>[0]): Promise<User | null> {

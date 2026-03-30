@@ -54,4 +54,11 @@ for (const e of expenseTypes) {
   `;
 }
 
+await sql`
+  CREATE TABLE IF NOT EXISTS user_fiken_mapping (
+    github_user_id INTEGER PRIMARY KEY,
+    fiken_contact_id TEXT NOT NULL
+  )
+`;
+
 console.log("Migration complete.");
