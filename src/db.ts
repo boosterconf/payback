@@ -4,6 +4,9 @@ import { config } from "./config";
 let instance: NeonQueryFunction<false, false> | null = null;
 const sql = () => (instance ??= neon(config.DATABASE_URL));
 
+// Wake up Neon DB on cold start (autosuspends after 5 min of inactivity)
+sql()`SELECT 1`.catch(() => {});
+
 export type Option = { id: string; name: string };
 
 const OTHER_RELATED_TO: Option = {
