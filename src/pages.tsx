@@ -17,7 +17,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => (
   </html>
 );
 
-const Card: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
+export const Card: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
   <div class="card">
     {children}
     {user && (
@@ -41,6 +41,14 @@ export const LoginPage: FC = () => (
       <img src="/github.svg" alt="" aria-hidden="true" />
       Sign in with GitHub
     </a>
+  </Layout>
+);
+
+export const UnauthorizedPage: FC = () => (
+  <Layout>
+    <img src="/nope.gif" alt="Nope" class="login-gif" />
+    <p class="text-muted" style="margin-bottom: 1rem; text-align: center;">You're not on the list. Ask for access in <a href="https://boosterconf.slack.com/archives/C20BUHH1V">#penger</a>.</p>
+    <a href="/auth" class="btn btn-outline login-gif">Try again</a>
   </Layout>
 );
 

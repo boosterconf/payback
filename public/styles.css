@@ -332,6 +332,10 @@ input[type="file"]::file-selector-button:hover {
   width: 100%;
 }
 
+.feedback-btn + .feedback-btn {
+  margin-top: 0.5rem;
+}
+
 .feedback p {
   font-size: 0.875rem;
   color: var(--muted-foreground);

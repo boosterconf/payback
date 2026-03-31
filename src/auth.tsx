@@ -2,7 +2,8 @@ import { Hono } from "hono";
 import { setSignedCookie, deleteCookie } from "hono/cookie";
 import { githubAuth } from "@hono/oauth-providers/github";
 import { config } from "./config";
-import { LoginPage, ErrorPage } from "./pages";
+import { LoginPage, ErrorPage, UnauthorizedPage } from "./pages";
+import { getFikenContactId } from "./db";
 import { getSessionUser, type Env } from "./middleware";
 
 const auth = new Hono<Env>();
@@ -24,9 +25,15 @@ auth.get("/login", githubAuth({
       return c.html(<ErrorPage message="GitHub authentication failed." />);
     }
 
-    const id = githubUser.id;
+    const id = githubUser.id!;
     const name = githubUser.name || githubUser.login || "unknown";
     const avatar = githubUser.avatar_url || "";
+
+    const fikenContactId = await getFikenContactId(id);
+    if (!fikenContactId) {
+      return c.redirect("/auth/unauthorized");
+    }
+
     await setSignedCookie(c, "session", JSON.stringify({ id, name, avatar }), config.COOKIE_SECRET, {
       httpOnly: true,
       secure: c.req.url.startsWith("https"),
@@ -38,6 +45,10 @@ auth.get("/login", githubAuth({
     return c.redirect("/");
   },
 );
+
+auth.get("/unauthorized", (c) => {
+  return c.html(<UnauthorizedPage />);
+});
 
 auth.get("/logout", (c) => {
   deleteCookie(c, "session", { path: "/" });
