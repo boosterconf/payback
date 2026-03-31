@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from "hono/jsx";
 import type { User } from "./middleware";
 
-export const Layout: FC<PropsWithChildren> = ({ children }) => (
+export const Layout: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
   <html lang="en">
     <head>
       <meta charset="utf-8" />
@@ -12,25 +12,22 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => (
     </head>
     <body>
       <div class="container">{children}</div>
+      {user && (
+        <div class="user-bubble">
+          <img src={user.avatar} alt="" class="avatar" />
+          <span>{user.name}</span>
+          <span class="user-bubble-divider" />
+          <a href="/auth/logout" class="user-bubble-signout">Sign out</a>
+        </div>
+      )}
       <script src="/script.js" defer />
     </body>
   </html>
 );
 
-export const Card: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
+export const Card: FC<PropsWithChildren> = ({ children }) => (
   <div class="card">
     {children}
-    {user && (
-      <div class="card-footer">
-        <div class="user-info">
-          <img src={user.avatar} alt="" class="avatar" />
-          <span class="text-muted">{user.name}</span>
-        </div>
-        <a href="/auth/logout" class="btn btn-ghost btn-sm">
-          Sign out
-        </a>
-      </div>
-    )}
   </div>
 );
 
@@ -57,8 +54,8 @@ export const FormPage: FC<{
   relatedToOptions: ReadonlyArray<{ id: string; name: string }>;
   expenseTypes: ReadonlyArray<{ id: string; name: string }>;
 }> = ({ user, relatedToOptions, expenseTypes }) => (
-  <Layout>
-    <Card user={user}>
+  <Layout user={user}>
+    <Card>
       <div class="card-header">
         <h1>Submit Receipt</h1>
         <p class="text-muted">Upload a receipt to get reimbursed for expenses. If you paid with a Booster VISA card then ignore this and e-mail the reciept to <a href="mailto:foreningen-boosterkonferansen@bilag.fiken.no">foreningen-boosterkonferansen@bilag.fiken.no</a>.</p>
@@ -120,8 +117,8 @@ export const FormPage: FC<{
 );
 
 export const SuccessPage: FC<{ user: User }> = ({ user }) => (
-  <Layout>
-    <Card user={user}>
+  <Layout user={user}>
+    <Card>
       <div class="feedback">
         <img src="/powerball.gif" alt="Money" class="feedback-gif" />
         <a href="/" class="btn btn-outline feedback-btn">
@@ -132,8 +129,8 @@ export const SuccessPage: FC<{ user: User }> = ({ user }) => (
   </Layout>
 );
 
-export const NotFoundPage: FC = () => (
-  <Layout>
+export const NotFoundPage: FC<{ user?: User | null }> = ({ user }) => (
+  <Layout user={user ?? undefined}>
     <img src="/notfound.gif" alt="Not found" class="login-gif" />
     <a href="/" class="btn btn-outline login-gif">
       Go home
@@ -142,8 +139,8 @@ export const NotFoundPage: FC = () => (
 );
 
 export const ErrorPage: FC<{ message: string; user?: User }> = ({ message, user }) => (
-  <Layout>
-    <Card user={user}>
+  <Layout user={user}>
+    <Card>
       <div class="feedback">
         <img src="/error.gif" alt="Error" class="feedback-gif" />
         <p>{message}</p>

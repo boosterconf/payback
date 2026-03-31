@@ -10,8 +10,8 @@ admin.use(requireUser);
 admin.get("/", (c) => {
   const user = c.get("user");
   return c.html(
-    <Layout>
-      <Card user={user}>
+    <Layout user={user}>
+      <Card>
         <div class="feedback">
           <img src="/admin.gif" alt="Admin" class="feedback-gif" />
           <a href={`https://vercel.com/${config.VERCEL_TEAM_SLUG}/${config.VERCEL_PROJECT_NAME}`} class="btn btn-outline feedback-btn">Vercel Dashboard</a>
