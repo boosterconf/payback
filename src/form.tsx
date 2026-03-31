@@ -28,7 +28,8 @@ form.post("/upload/handle", requireUser, async (c) => {
     request: c.req.raw,
     onBeforeGenerateToken: async () => ({
       allowedContentTypes: ["image/jpeg", "image/png", "application/pdf"],
-      maximumSizeInBytes: 5 * 1024 * 1024,
+      maximumSizeInBytes: 25 * 1024 * 1024,
+      addRandomSuffix: true,
     }),
     onUploadCompleted: async () => {},
   });

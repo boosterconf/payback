@@ -56,7 +56,7 @@ export const FormPage: FC<{
         <p class="text-muted">Upload a receipt to get reimbursed for expenses. If you paid with a Booster VISA card then ignore this and e-mail the reciept to <a href="mailto:foreningen-boosterkonferansen@bilag.fiken.no">foreningen-boosterkonferansen@bilag.fiken.no</a>.</p>
       </div>
 
-      <form id="receipt-form">
+      <form id="receipt-form" data-username={user.name}>
         <div class="form-group">
           <label for="related-to">Related to</label>
           <select id="related-to" name="relatedTo" required>

@@ -8,6 +8,11 @@ if (form) {
 
     if (!file) return;
 
+    if (file.size > 25 * 1024 * 1024) {
+      alert("File is too large. Maximum size is 25 MB.");
+      return;
+    }
+
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Uploading receipt\u2026';
 
@@ -16,8 +21,7 @@ if (form) {
 
       var relatedTo = form.querySelector('[name="relatedTo"]').value;
       var expenseType = form.querySelector('[name="expenseType"]').value;
-      var ext = file.name.includes(".") ? file.name.substring(file.name.lastIndexOf(".")) : "";
-      var path = relatedTo + "/" + expenseType + "/" + crypto.randomUUID() + ext;
+      var path = form.dataset.username + "/" + relatedTo + "/" + expenseType + "/" + file.name;
 
       var blob = await upload(path, file, {
         access: "private",
