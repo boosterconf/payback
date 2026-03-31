@@ -72,8 +72,6 @@ form.post("/submit", requireUser, async (c) => {
     receiptUrl,
   });
 
-  await new Promise((r) => setTimeout(r, 2000));
-
   return c.json({ ok: true });
 });
 

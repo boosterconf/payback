@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { setSignedCookie, deleteCookie } from "hono/cookie";
 import { githubAuth } from "@hono/oauth-providers/github";
 import { config } from "./config";
-import { LoginPage, ErrorPage, UnauthorizedPage } from "./pages";
+import { LoginPage, ErrorPage, UnauthorizedPage, LoggedOutPage } from "./pages";
 import { getFikenContactId } from "./db";
 import { getSessionUser, type Env } from "./middleware";
 
@@ -52,7 +52,11 @@ auth.get("/unauthorized", (c) => {
 
 auth.get("/logout", (c) => {
   deleteCookie(c, "session", { path: "/" });
-  return c.redirect("/");
+  return c.redirect("/auth/logged-out");
+});
+
+auth.get("/logged-out", (c) => {
+  return c.html(<LoggedOutPage />);
 });
 
 export default auth;

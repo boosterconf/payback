@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { config } from "./config";
-import { Layout, Card } from "./pages";
+import { Layout } from "./pages";
 import { requireUser, type Env } from "./middleware";
 
 const admin = new Hono<Env>();
@@ -11,13 +11,9 @@ admin.get("/", (c) => {
   const user = c.get("user");
   return c.html(
     <Layout user={user}>
-      <Card>
-        <div class="feedback">
-          <img src="/admin.gif" alt="Admin" class="feedback-gif" />
-          <a href={`https://vercel.com/${config.VERCEL_TEAM_SLUG}/${config.VERCEL_PROJECT_NAME}`} class="btn btn-outline feedback-btn">Vercel Dashboard</a>
-          <a href={`https://console.neon.tech/app/projects/${config.NEON_PROJECT_ID}`} class="btn btn-outline feedback-btn">Neon Console</a>
-        </div>
-      </Card>
+      <img src="/admin.gif" alt="Admin" class="login-gif" />
+      <a href={`https://vercel.com/${config.VERCEL_TEAM_SLUG}/${config.VERCEL_PROJECT_NAME}`} class="btn btn-outline login-gif">Vercel Dashboard</a>
+      <a href={`https://console.neon.tech/app/projects/${config.NEON_PROJECT_ID}`} class="btn btn-outline login-gif">Neon Console</a>
     </Layout>
   );
 });

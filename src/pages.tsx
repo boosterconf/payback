@@ -41,6 +41,13 @@ export const LoginPage: FC = () => (
   </Layout>
 );
 
+export const LoggedOutPage: FC = () => (
+  <Layout>
+    <img src="/bye.gif" alt="Bye" class="login-gif" />
+    <a href="/auth" class="btn btn-outline login-gif">Sign in again</a>
+  </Layout>
+);
+
 export const UnauthorizedPage: FC = () => (
   <Layout>
     <img src="/nope.gif" alt="Nope" class="login-gif" />
@@ -118,14 +125,10 @@ export const FormPage: FC<{
 
 export const SuccessPage: FC<{ user: User }> = ({ user }) => (
   <Layout user={user}>
-    <Card>
-      <div class="feedback">
-        <img src="/powerball.gif" alt="Money" class="feedback-gif" />
-        <a href="/" class="btn btn-outline feedback-btn">
-          Submit another
-        </a>
-      </div>
-    </Card>
+    <img src="/powerball.gif" alt="Money" class="login-gif" />
+    <a href="/" class="btn btn-outline login-gif">
+      Submit another
+    </a>
   </Layout>
 );
 
@@ -140,14 +143,10 @@ export const NotFoundPage: FC<{ user?: User | null }> = ({ user }) => (
 
 export const ErrorPage: FC<{ message: string; user?: User }> = ({ message, user }) => (
   <Layout user={user}>
-    <Card>
-      <div class="feedback">
-        <img src="/error.gif" alt="Error" class="feedback-gif" />
-        <p>{message}</p>
-        <a href="/" class="btn btn-outline feedback-btn">
-          Try again
-        </a>
-      </div>
-    </Card>
+    <img src="/error.gif" alt="Error" class="login-gif" />
+    <p class="text-muted" style="margin-bottom: 1rem; text-align: center;">{message}</p>
+    <a href="/" class="btn btn-outline login-gif">
+      Try again
+    </a>
   </Layout>
 );
