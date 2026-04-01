@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { handleUpload } from "@vercel/blob/client";
-import { getFormOptions, getFikenContactId } from "./db";
-import { FormPage, SuccessPage, ErrorPage } from "./pages";
-import { requireUser, type Env } from "./middleware";
+import { getFormOptions, getFikenContactId } from "../db";
+import { FormPage, SuccessPage, ErrorPage } from "../pages";
+import { requireUser, type Env } from "../middleware";
 
 const form = new Hono<Env>();
 

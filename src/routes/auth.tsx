@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import { setSignedCookie, deleteCookie } from "hono/cookie";
 import { githubAuth } from "@hono/oauth-providers/github";
-import { config } from "./config";
-import { LoginPage, ErrorPage, UnauthorizedPage, LoggedOutPage } from "./pages";
-import { getFikenContactId } from "./db";
-import { getSessionUser, type Env } from "./middleware";
+import { config } from "../config";
+import { LoginPage, ErrorPage, UnauthorizedPage, LoggedOutPage } from "../pages";
+import { getFikenContactId } from "../db";
+import { getSessionUser, type Env } from "../middleware";
 
 const auth = new Hono<Env>();
 

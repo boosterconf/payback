@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import admin from "./admin";
-import auth from "./auth";
-import cron from "./cron";
-import form from "./form";
-import notFound from "./notFound";
+import admin from "./routes/admin";
+import auth from "./routes/auth";
+import cron from "./routes/cron";
+import form from "./routes/form";
+import notFound from "./routes/not-found";
 
 const app = new Hono();
 

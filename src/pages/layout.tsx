@@ -1,0 +1,26 @@
+import type { FC, PropsWithChildren } from "hono/jsx";
+import type { User } from "../middleware";
+
+export const Layout: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
+  <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Booster Payback</title>
+      <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      <link rel="stylesheet" href="/styles.css" />
+    </head>
+    <body>
+      <div class="container">{children}</div>
+      {user && (
+        <div class="user-bubble">
+          <img src={user.avatar} alt="" class="avatar" />
+          <span>{user.name}</span>
+          <span class="user-bubble-divider" />
+          <a href="/auth/logout" class="user-bubble-signout">Sign out</a>
+        </div>
+      )}
+      <script src="/script.js" defer />
+    </body>
+  </html>
+);

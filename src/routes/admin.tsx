@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { config } from "./config";
-import { Layout } from "./pages";
-import { requireUser, type Env } from "./middleware";
+import { config } from "../config";
+import { Layout } from "../pages";
+import { requireUser, type Env } from "../middleware";
 
 const admin = new Hono<Env>();
 
