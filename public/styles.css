@@ -310,7 +310,7 @@ body:has(.user-bubble)::after {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 5rem;
+  height: 6rem;
   background: linear-gradient(to bottom, transparent, var(--background));
   pointer-events: none;
   z-index: 40;
