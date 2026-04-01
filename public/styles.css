@@ -83,6 +83,18 @@ body {
   align-items: center;
 }
 
+@media (min-width: 480px) {
+  body:has(.card) {
+    background: #fafafa;
+  }
+}
+
+@media (min-width: 480px) and (prefers-color-scheme: dark) {
+  body:has(.card) {
+    background: var(--background);
+  }
+}
+
 /* ===== Card ===== */
 .card {
   align-self: stretch;
