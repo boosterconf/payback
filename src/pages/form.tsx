@@ -1,11 +1,12 @@
 import type { FC } from "hono/jsx";
 import type { User } from "../middleware";
+import type { RelatedToOption, ExpenseType } from "../db";
 import { Layout } from "./layout";
 
 export const FormPage: FC<{
   user: User;
-  relatedToOptions: ReadonlyArray<{ id: string; name: string }>;
-  expenseTypes: ReadonlyArray<{ id: string; name: string }>;
+  relatedToOptions: ReadonlyArray<RelatedToOption>;
+  expenseTypes: ReadonlyArray<ExpenseType>;
 }> = ({ user, relatedToOptions, expenseTypes }) => (
   <Layout user={user}>
     <div class="card">
@@ -47,6 +48,18 @@ export const FormPage: FC<{
             type="text"
             placeholder="What was the expense for? (optional)"
             maxlength={150}
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="amount">Amount (NOK)</label>
+          <input
+            id="amount"
+            name="amount"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Leave blank if unsure (optional)"
           />
         </div>
 

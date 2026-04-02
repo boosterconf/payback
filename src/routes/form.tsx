@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { handleUpload } from "@vercel/blob/client";
 import { getFormOptions, getFikenContactId } from "../db";
+import { submitReceipt } from "../fiken";
 import { FormPage, SuccessPage, ErrorPage } from "../pages";
 import { requireUser, type Env } from "../middleware";
 
@@ -41,12 +42,12 @@ form.post("/submit", requireUser, async (c) => {
   const user = c.get("user");
 
   const body = await c.req.json();
-  const { relatedTo, expenseType, description, receiptUrl } = body as Record<string, string>;
+  const { relatedTo, expenseType, description, amount, receiptUrl } = body as Record<string, string>;
 
   const { relatedToOptions, expenseTypes } = await getFormOptions();
   const fikenContactId = await getFikenContactId(user.id);
-  const validRelatedToIds = relatedToOptions.map((s) => s.id);
-  const validExpenseTypeIds = expenseTypes.map((t) => t.id);
+  const validRelatedToIds = relatedToOptions.map((s) => String(s.id));
+  const validExpenseTypeIds = expenseTypes.map((t) => String(t.id));
 
   const error =
     typeof relatedTo !== "string" || typeof expenseType !== "string" || typeof receiptUrl !== "string"
@@ -63,9 +64,20 @@ form.post("/submit", requireUser, async (c) => {
     return c.json({ error }, 400);
   }
 
+  const selectedExpenseType = expenseTypes.find((t) => String(t.id) === expenseType);
+
+  const draftId = await submitReceipt({
+    contactId: Number(fikenContactId),
+    incomeAccount: selectedExpenseType!.incomeAccount || "7799",
+    description: `${selectedExpenseType!.descriptionPrefix}: ${description || ""}`.trim(),
+    grossAmount: amount ? Math.round(parseFloat(amount) * 100) : 0,
+    receiptUrl: receiptUrl!,
+  });
+
   console.log("Receipt submitted:", {
     user: user.name,
     fikenContactId,
+    fikenDraftId: draftId,
     relatedTo,
     expenseType,
     description: description || "",

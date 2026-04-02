@@ -12,4 +12,5 @@ export const config = {
   get NEON_PROJECT_ID() { return env("NEON_PROJECT_ID"); },
   get VERCEL_TEAM_SLUG() { return env("VERCEL_TEAM_SLUG"); },
   get VERCEL_PROJECT_NAME() { return env("VERCEL_PROJECT_NAME"); },
+  get FIKEN_TOKEN() { return env("FIKEN_TOKEN"); },
 };

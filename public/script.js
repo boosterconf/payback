@@ -21,7 +21,9 @@ if (form) {
 
       var relatedTo = form.querySelector('[name="relatedTo"]').value;
       var expenseType = form.querySelector('[name="expenseType"]').value;
-      var path = form.dataset.username + "/" + relatedTo + "/" + expenseType + "/" + file.name;
+      var d = new Date();
+      var date = d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0");
+      var path = form.dataset.username + "/" + date + "/" + file.name;
 
       var blob = await upload(path, file, {
         access: "private",
@@ -37,6 +39,7 @@ if (form) {
           relatedTo: relatedTo,
           expenseType: expenseType,
           description: form.querySelector('[name="description"]').value,
+          amount: form.querySelector('[name="amount"]').value,
           receiptUrl: blob.url,
         }),
       });

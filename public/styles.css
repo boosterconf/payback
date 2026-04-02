@@ -163,6 +163,7 @@ body {
 }
 
 input[type="text"],
+input[type="number"],
 select {
   width: 100%;
   padding: 0.5rem 0.75rem;
@@ -182,12 +183,14 @@ select {
 }
 
 input[type="text"]:focus,
+input[type="number"]:focus,
 select:focus {
   border-color: var(--ring);
   box-shadow: 0 0 0 2px var(--ring);
 }
 
-input[type="text"]::placeholder {
+input[type="text"]::placeholder,
+input[type="number"]::placeholder {
   color: var(--muted-foreground);
 }
 
