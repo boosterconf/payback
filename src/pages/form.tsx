@@ -1,6 +1,6 @@
 import type { FC } from "hono/jsx";
-import type { User } from "../middleware";
-import type { RelatedToOption, ExpenseType } from "../db";
+import type { User } from "../types";
+import type { RelatedToOption, ExpenseType } from "../services/db";
 import { Layout } from "./layout";
 
 export const FormPage: FC<{
@@ -59,7 +59,7 @@ export const FormPage: FC<{
             type="number"
             min="0"
             step="0.01"
-            placeholder="Leave blank if unsure (optional)"
+            placeholder="How much was it? (optional)"
           />
         </div>
 

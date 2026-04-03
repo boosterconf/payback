@@ -1,10 +1,7 @@
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
-import admin from "./routes/admin";
-import auth from "./routes/auth";
-import cron from "./routes/cron";
-import form from "./routes/form";
-import notFound from "./routes/not-found";
+import { admin, auth, cron, form } from "./routes";
+import { notFound, onError } from "./middleware";
 
 const app = new Hono();
 
@@ -19,5 +16,6 @@ app.route("/cron", cron);
 app.route("/", form);
 
 app.notFound(notFound);
+app.onError(onError);
 
 export default app;

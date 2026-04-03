@@ -1,4 +1,4 @@
-import { config } from "./config";
+import { config } from "../config";
 import { get } from "@vercel/blob";
 
 const FIKEN_BASE = "https://api.fiken.no/api/v2";
@@ -32,7 +32,8 @@ async function fikenFetch(path: string, init?: RequestInit): Promise<Response> {
 
   if (!res.ok) {
     const body = await res.text();
-    throw new Error(`Fiken API ${res.status}: ${body}`);
+    console.error(`Fiken API error on ${path}: ${res.status} ${body}`);
+    throw new Error(`Fiken API request failed (${res.status})`);
   }
 
   return res;
@@ -90,12 +91,18 @@ export async function submitReceipt(params: SubmitReceiptParams): Promise<number
 
   // Download the receipt from Vercel Blob (private store requires token)
   const result = await get(params.receiptUrl, { access: "private" });
-  if (!result || result.statusCode !== 200) throw new Error("Failed to fetch receipt from blob store");
+  if (!result) throw new Error("Receipt not found in blob store");
+  if (result.statusCode !== 200) throw new Error(`Unexpected blob status: ${result.statusCode}`);
 
   const blob = await new Response(result.stream).blob();
   const filename = result.blob.pathname.split("/").pop() || "receipt.jpg";
 
-  await addAttachmentToDraft(draftId, filename, blob);
+  try {
+    await addAttachmentToDraft(draftId, filename, blob);
+  } catch (err) {
+    console.error(`Failed to attach receipt to draft ${draftId}:`, err);
+    throw err;
+  }
 
   return draftId;
 }

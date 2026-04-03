@@ -1,11 +1,11 @@
 import type { FC } from "hono/jsx";
-import type { User } from "../middleware";
+import type { User } from "../types";
 import { Layout } from "./layout";
 
-export const ErrorPage: FC<{ message: string; user?: User }> = ({ message, user }) => (
+export const ErrorPage: FC<{ message?: string; user?: User }> = ({ message, user }) => (
   <Layout user={user}>
     <img src="/error.gif" alt="Error" class="login-gif" />
-    <p class="text-muted" style="margin-bottom: 1rem; text-align: center;">{message}</p>
+    <p class="text-muted" style="margin-bottom: 1rem; text-align: center;">{message || "Something went wrong."}</p>
     <a href="/" class="btn btn-outline login-gif">
       Try again
     </a>

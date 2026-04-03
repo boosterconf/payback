@@ -1,5 +1,5 @@
 import type { FC } from "hono/jsx";
-import type { User } from "../middleware";
+import type { User } from "../types";
 import { Layout } from "./layout";
 
 export const SuccessPage: FC<{ user: User }> = ({ user }) => (

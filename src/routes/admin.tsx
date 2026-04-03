@@ -1,7 +1,8 @@
 import { Hono } from "hono";
 import { config } from "../config";
 import { Layout } from "../pages";
-import { requireUser, type Env } from "../middleware";
+import { requireUser } from "../middleware";
+import type { Env } from "../types";
 
 const admin = new Hono<Env>();
 
@@ -18,4 +19,4 @@ admin.get("/", (c) => {
   );
 });
 
-export default admin;
+export { admin };

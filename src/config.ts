@@ -13,4 +13,5 @@ export const config = {
   get VERCEL_TEAM_SLUG() { return env("VERCEL_TEAM_SLUG"); },
   get VERCEL_PROJECT_NAME() { return env("VERCEL_PROJECT_NAME"); },
   get FIKEN_TOKEN() { return env("FIKEN_TOKEN"); },
+  get CRON_SECRET() { return env("CRON_SECRET"); },
 };

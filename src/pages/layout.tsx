@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren } from "hono/jsx";
-import type { User } from "../middleware";
+import type { User } from "../types";
 
 export const Layout: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
   <html lang="en">

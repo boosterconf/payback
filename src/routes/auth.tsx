@@ -1,16 +1,15 @@
 import { Hono } from "hono";
-import { setSignedCookie, deleteCookie } from "hono/cookie";
 import { githubAuth } from "@hono/oauth-providers/github";
 import { config } from "../config";
-import { LoginPage, ErrorPage, UnauthorizedPage, LoggedOutPage } from "../pages";
-import { getFikenContactId } from "../db";
-import { getSessionUser, type Env } from "../middleware";
+import { LoginPage, UnauthorizedPage, LoggedOutPage } from "../pages";
+import { getFikenContactId } from "../services/db";
+import { setSessionUser, clearSession } from "../session";
+import { type Env } from "../types";
 
 const auth = new Hono<Env>();
 
-auth.get("/", async (c) => {
-  const user = await getSessionUser(c);
-  if (user) return c.redirect("/");
+auth.get("/", (c) => {
+  clearSession(c);
   return c.html(<LoginPage />);
 });
 
@@ -21,11 +20,11 @@ auth.get("/login", githubAuth({
   async (c) => {
     const githubUser = c.get("user-github");
 
-    if (!githubUser) {
-      return c.html(<ErrorPage message="GitHub authentication failed." />);
+    if (!githubUser || !githubUser.id) {
+      throw new Error("GitHub authentication failed.");
     }
 
-    const id = githubUser.id!;
+    const id = githubUser.id;
     const name = githubUser.name || githubUser.login || "unknown";
     const avatar = githubUser.avatar_url || "";
 
@@ -34,13 +33,7 @@ auth.get("/login", githubAuth({
       return c.redirect("/auth/unauthorized");
     }
 
-    await setSignedCookie(c, "session", JSON.stringify({ id, name, avatar }), config.COOKIE_SECRET, {
-      httpOnly: true,
-      secure: c.req.url.startsWith("https"),
-      sameSite: "Lax",
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-    });
+    await setSessionUser(c, { id, name, avatar, fikenContactId: Number(fikenContactId) });
 
     return c.redirect("/");
   },
@@ -51,7 +44,7 @@ auth.get("/unauthorized", (c) => {
 });
 
 auth.get("/logout", (c) => {
-  deleteCookie(c, "session", { path: "/" });
+  clearSession(c);
   return c.redirect("/auth/logged-out");
 });
 
@@ -59,4 +52,4 @@ auth.get("/logged-out", (c) => {
   return c.html(<LoggedOutPage />);
 });
 
-export default auth;
+export { auth };

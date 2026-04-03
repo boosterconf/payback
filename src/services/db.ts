@@ -1,11 +1,11 @@
 import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
-import { config } from "./config";
+import { config } from "../config";
 
 let instance: NeonQueryFunction<false, false> | null = null;
 const sql = () => (instance ??= neon(config.DATABASE_URL));
 
 // Wake up Neon DB on cold start (autosuspends after 5 min of inactivity)
-sql()`SELECT 1`.catch(() => {});
+sql()`SELECT 1`.catch((err) => console.error("DB warmup failed:", err));
 
 export type RelatedToOption = { id: number; name: string; projectId: number };
 export type ExpenseType = { id: number; name: string; incomeAccount: string; descriptionPrefix: string };

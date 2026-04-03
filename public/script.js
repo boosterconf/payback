@@ -49,10 +49,10 @@ if (form) {
       if (data.ok) {
         window.location.href = "/success";
       } else {
-        window.location.href = "/error?message=" + encodeURIComponent(data.error || "Something went wrong.");
+        window.location.href = "/error";
       }
     } catch (err) {
-      window.location.href = "/error?message=" + encodeURIComponent(err.message || "Upload failed.");
+      window.location.href = "/error";
     }
   });
 }
