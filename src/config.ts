@@ -5,8 +5,9 @@ function env(name: string): string {
 }
 
 export const config = {
-  get GITHUB_CLIENT_ID() { return env("GITHUB_CLIENT_ID"); },
-  get GITHUB_CLIENT_SECRET() { return env("GITHUB_CLIENT_SECRET"); },
+  get SLACK_CLIENT_ID() { return env("SLACK_CLIENT_ID"); },
+  get SLACK_CLIENT_SECRET() { return env("SLACK_CLIENT_SECRET"); },
+  get SLACK_TEAM_ID() { return env("SLACK_TEAM_ID"); },
   get COOKIE_SECRET() { return env("COOKIE_SECRET"); },
   get DATABASE_URL() { return env("DATABASE_URL"); },
   get NEON_PROJECT_ID() { return env("NEON_PROJECT_ID"); },

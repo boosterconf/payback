@@ -16,7 +16,6 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@hono/oauth-providers": "^0.8.5",
     "@neondatabase/serverless": "^1.0.2",
     "@vercel/blob": "^2.3.2",
     "hono": "^4.12.9"

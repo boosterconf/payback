@@ -39,6 +39,16 @@ async function fikenFetch(path: string, init?: RequestInit): Promise<Response> {
   return res;
 }
 
+export async function getContactIdByEmail(email: string): Promise<number | null> {
+  const params = new URLSearchParams({ email, supplier: "true" });
+  const res = await fikenFetch(`/contacts?${params}`);
+  const contacts = (await res.json()) as { contactId: number }[];
+  if (contacts.length === 0) return null;
+  if (contacts.length > 1) console.warn(`Multiple Fiken contacts found for email ${email}, using first match`);
+  console.log(contacts[0]!);
+  return contacts[0]!.contactId;
+}
+
 async function createPurchaseDraft(draft: PurchaseDraft): Promise<number> {
   const res = await fikenFetch("/purchases/drafts", {
     method: "POST",

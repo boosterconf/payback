@@ -312,6 +312,24 @@ input[type="file"]::file-selector-button:hover {
   height: 1.25rem;
 }
 
+/* ===== Booster button ===== */
+.btn-booster {
+  max-width: 250px;
+  width: 100%;
+  background: #000;
+  color: #fefcf6;
+  border-color: #000;
+}
+
+.btn-booster:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.booster-logo {
+  height: 0.7rem;
+  width: auto;
+}
+
 /* ===== User Bubble ===== */
 body:has(.user-bubble) {
   padding-bottom: 4.5rem;
