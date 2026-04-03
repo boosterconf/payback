@@ -5,7 +5,9 @@ let instance: NeonQueryFunction<false, false> | null = null;
 const sql = () => (instance ??= neon(config.DATABASE_URL));
 
 // Wake up Neon DB on cold start (autosuspends after 5 min of inactivity)
-sql()`SELECT 1`.catch((err) => console.error("DB warmup failed:", err));
+sql()`SELECT 1`
+  .then(() => console.log("DB warmup succeeded"))
+  .catch((err) => console.error("DB warmup failed:", err));
 
 export type RelatedToOption = { id: number; name: string; projectId: number };
 export type ExpenseType = { id: number; name: string; incomeAccount: string; descriptionPrefix: string };
@@ -35,8 +37,6 @@ export async function getFormOptions() {
 }
 
 export async function getFikenContactId(githubUserId: number): Promise<string | null> {
-  const rows = await sql()`
-    SELECT fiken_contact_id FROM user_fiken_mapping WHERE github_user_id = ${githubUserId}
-  `;
+  const rows = await sql()`SELECT fiken_contact_id FROM user_fiken_mapping WHERE github_user_id = ${githubUserId}`;
   return rows.length > 0 ? (rows[0] as { fiken_contact_id: string }).fiken_contact_id : null;
 }
