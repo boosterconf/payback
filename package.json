@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "postinstall": "bun scripts/bundle-blob.ts",
-    "build": "bun scripts/bundle-blob.ts",
+    "build": "cp .env.example public/.env.example",
     "check": "tsc --noEmit",
     "dev": "bun scripts/local-dev.ts"
   },
