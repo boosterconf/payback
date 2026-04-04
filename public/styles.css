@@ -408,3 +408,7 @@ body:has(.user-bubble)::after {
   color: inherit;
   text-decoration: underline;
 }
+
+pwa-install {
+  display: contents;
+}
