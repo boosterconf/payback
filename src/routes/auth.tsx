@@ -21,8 +21,20 @@ auth.get("/", (c) => {
 });
 
 auth.get("/login", async (c) => {
+
+  if (process.env.DEV_USER) {
+    const devUser = {
+      "id": "dev",
+      "name": "Development User",
+      "avatar": "/fallback-profile.png",
+      "fikenContactId": 11834020280
+    };
+    await setSessionUser(c, devUser);
+    return c.redirect("/");
+  }
+
   const state = crypto.randomUUID();
-  const redirectUri = new URL("/auth/callback", c.req.url).href;
+  const redirectUri = new URL("/auth/callback", c.req.url).href.replace("http://", "https://");
 
   await setOAuthState(c, state);
 
@@ -50,7 +62,8 @@ auth.get("/callback", async (c) => {
 
   clearOAuthState(c);
 
-  const redirectUri = new URL("/auth/callback", c.req.url).href;
+  const redirectUri = new URL("/auth/callback", c.req.url).href.replace("http://", "https://");
+
   const tokenRes = await fetch("https://slack.com/api/openid.connect.token", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -81,7 +94,7 @@ auth.get("/callback", async (c) => {
   await setSessionUser(c, {
     id: slackUser.sub,
     name: slackUser.name || "unknown",
-    avatar: slackUser.picture || "",
+    avatar: slackUser.picture || "/fallback-profile.png",
     fikenContactId,
   });
 

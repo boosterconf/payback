@@ -5,19 +5,19 @@
   "scripts": {
     "build": "echo 'No build step'",
     "check": "tsc --noEmit",
-    "dev": "vercel env pull .env.local --yes && bun --hot src/server.ts",
+    "dev": "vercel env pull --yes && DEV_USER=true bun --env-file=.env.local --hot src/server.ts",
     "bundle:blob": "bun build node_modules/@vercel/blob/dist/client.js --outfile=public/blob-client.js --minify"
   },
   "devDependencies": {
     "@tsconfig/bun": "^1.0.10",
-    "@types/bun": "latest"
+    "@types/bun": "^1.3.11"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
-    "@vercel/blob": "^2.3.2",
-    "hono": "^4.12.9"
+    "@vercel/blob": "^2.3.3",
+    "hono": "^4.12.10"
   }
 }
