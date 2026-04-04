@@ -3,9 +3,9 @@ import type { User } from "../types";
 import { Layout } from "./layout";
 
 export const NotFoundPage: FC<{ user?: User | null }> = ({ user }) => (
-  <Layout user={user ?? undefined}>
-    <img src="/notfound.gif" alt="Not found" class="login-gif" />
-    <a href="/" class="btn btn-outline login-gif">
+  <Layout user={user}>
+    <img src="/notfound.gif" alt="Not found" />
+    <a href="/" class="btn btn-outline">
       Go home
     </a>
   </Layout>

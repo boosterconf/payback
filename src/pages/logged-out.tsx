@@ -3,7 +3,7 @@ import { Layout } from "./layout";
 
 export const LoggedOutPage: FC = () => (
   <Layout>
-    <img src="/bye.gif" alt="Bye" class="login-gif" />
-    <a href="/auth" class="btn btn-outline login-gif">Sign in again</a>
+    <img src="/bye.gif" alt="Bye" />
+    <a href="/auth" class="btn btn-outline">Sign in again</a>
   </Layout>
 );
