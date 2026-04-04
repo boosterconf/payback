@@ -57,7 +57,13 @@ form.post("/submit", requireUser, async (c) => {
   if (!Number.isInteger(expenseTypeIndex) || expenseTypeIndex < 0 || expenseTypeIndex >= expenseTypes.length) {
     throw new HTTPException(400, { message: "Invalid expense type." });
   }
-  if (!receiptUrl.includes(".blob.vercel-storage.com/")) {
+  try {
+    const receiptHost = new URL(receiptUrl).hostname;
+    if (!receiptHost.endsWith(".blob.vercel-storage.com")) {
+      throw new HTTPException(400, { message: "Invalid receipt URL." });
+    }
+  } catch (e) {
+    if (e instanceof HTTPException) throw e;
     throw new HTTPException(400, { message: "Invalid receipt URL." });
   }
 
