@@ -109,10 +109,6 @@ body {
   gap: 0;
 }
 
-.container:has(.card) img {
-  width: auto;
-}
-
 @media (min-width: 480px) {
   body:has(.card) {
     background: #fafafa;
@@ -258,7 +254,8 @@ input[type="file"]::file-selector-button:hover {
   border-color: var(--primary);
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-primary:hover:not(:disabled),
+.btn-booster:hover:not(:disabled) {
   opacity: 0.9;
 }
 
@@ -292,13 +289,9 @@ input[type="file"]::file-selector-button:hover {
 
 /* ===== Booster button ===== */
 .btn-booster {
-  background: #000;
-  color: #fefcf6;
-  border-color: #000;
-}
-
-.btn-booster:hover:not(:disabled) {
-  opacity: 0.9;
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
 }
 
 .booster-logo {
@@ -346,12 +339,6 @@ body:has(.user-bubble)::after {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.user-bubble .avatar {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
 }
 
 .user-bubble-divider {
