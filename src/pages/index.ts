@@ -1,4 +1,5 @@
 export { Layout } from "./layout";
+export { AdminPage } from "./admin";
 export { LoginPage } from "./login";
 export { LoggedOutPage } from "./logged-out";
 export { UnauthorizedPage } from "./unauthorized";
