@@ -3,10 +3,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "postinstall": "bun scripts/bundle-blob.ts",
-    "build": "cp .env.example public/.env.example",
+    "postinstall": "bun --bun scripts/bundle-blob.ts",
+    "build": "bun --bun scripts/bundle-blob.ts",
     "check": "tsc --noEmit",
-    "dev": "bun scripts/local-dev.ts"
+    "dev": "bun --bun scripts/local-dev.ts"
   },
   "devDependencies": {
     "@tsconfig/bun": "^1.0.10",
