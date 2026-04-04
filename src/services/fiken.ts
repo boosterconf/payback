@@ -76,7 +76,7 @@ async function addAttachmentToDraft(draftId: number, filename: string, blob: Blo
 
 interface SubmitReceiptParams {
   contactId: number;
-  projectId?: number;
+  projectId: number;
   incomeAccount: string;
   description: string;
   grossAmount: number;
@@ -89,7 +89,7 @@ export async function submitReceipt(params: SubmitReceiptParams): Promise<number
     cash: false,
     paid: false,
     contactId: params.contactId,
-    projectId: params.projectId,
+    projectId: params.projectId || undefined,
     invoiceIssueDate: new Date().toISOString().split("T")[0],
     lines: [
       {
