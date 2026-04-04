@@ -1,11 +1,16 @@
 import type { FC, PropsWithChildren } from "hono/jsx";
 import type { User } from "../types";
+import { readdir } from "node:fs/promises";
+
+const gifs = (await readdir(new URL("../../public", import.meta.url)))
+  .filter((f) => f.endsWith(".gif"))
+  .map((f) => `/${f}`);
 
 export const Layout: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
   <html lang="en">
     <head>
       <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       <title>Booster Payback</title>
       <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       <link rel="apple-touch-icon" href="/icon-180.png" />
@@ -14,6 +19,7 @@ export const Layout: FC<PropsWithChildren<{ user?: User }>> = ({ user, children 
       <meta name="apple-mobile-web-app-title" content="Payback" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <link rel="stylesheet" href="/styles.css" />
+      {gifs.map((gif) => <link rel="prefetch" href={gif} as="image" />)}
     </head>
     <body>
       <div class="container">{children}</div>
