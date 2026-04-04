@@ -3,8 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "postinstall": "bun --bun scripts/bundle-blob.ts",
-    "build": "bun --bun scripts/bundle-blob.ts",
+    "build": ":",
     "check": "tsc --noEmit",
     "dev": "bun --bun scripts/local-dev.ts"
   },

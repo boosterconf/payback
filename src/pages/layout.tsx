@@ -32,7 +32,7 @@ export const Layout: FC<PropsWithChildren<{ user?: User }>> = ({ user, children 
           <a href="/auth/logout" class="user-bubble-signout">Sign out</a>
         </div>
       )}
-      <script src="/script.js" defer />
+      <script type="module" src="/script.js" />
       <script type="module" src="https://esm.sh/@khmyznikov/pwa-install@0.6.2" />
       <pwa-install
         manifest-url="/manifest.json"

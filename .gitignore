@@ -3,7 +3,6 @@ node_modules
 .env
 .env.local
 .env*.local
-public/blob-client.js
 
 # macOS
 .DS_Store

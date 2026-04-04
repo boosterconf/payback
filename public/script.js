@@ -1,3 +1,5 @@
+import { upload } from "/blob-client.js";
+
 var form = document.getElementById("receipt-form");
 if (form) {
   form.addEventListener("submit", async function (e) {
@@ -17,8 +19,6 @@ if (form) {
     btn.innerHTML = '<span class="spinner"></span> Uploading receipt\u2026';
 
     try {
-      var { upload } = await import("/blob-client.js");
-
       var relatedTo = form.querySelector('[name="relatedTo"]').value;
       var expenseType = form.querySelector('[name="expenseType"]').value;
       var d = new Date();
