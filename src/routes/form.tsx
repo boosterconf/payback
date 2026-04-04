@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { handleUpload } from "@vercel/blob/client";
-import relatedToOptions from "../data/related-to-options.json";
-import expenseTypes from "../data/expense-types.json";
+import relatedToOptions from "../data/related-to-options.json" with { type: "json" };
+import expenseTypes from "../data/expense-types.json" with { type: "json" };
 import { submitReceipt } from "../services/fiken";
 import { FormPage, SuccessPage, ErrorPage } from "../pages";
 import { requireUser } from "../middleware";
