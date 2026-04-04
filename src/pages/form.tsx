@@ -21,8 +21,8 @@ export const FormPage: FC<{
             <option value="" disabled selected>
               Select…
             </option>
-            {relatedToOptions.map((s) => (
-              <option value={s.id}>{s.name}</option>
+            {relatedToOptions.map((s, i) => (
+              <option value={i}>{s.name}</option>
             ))}
           </select>
         </div>
@@ -33,8 +33,8 @@ export const FormPage: FC<{
             <option value="" disabled selected>
               Select an expense type…
             </option>
-            {expenseTypes.map((t) => (
-              <option value={t.id}>{t.name}</option>
+            {expenseTypes.map((t, i) => (
+              <option value={i}>{t.name}</option>
             ))}
           </select>
         </div>

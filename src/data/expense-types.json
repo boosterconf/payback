@@ -1,8 +1,0 @@
-[
-  { "id": 0, "name": "Taxi / Transport", "incomeAccount": "7140", "descriptionPrefix": "Transport" },
-  { "id": 1, "name": "Drinks, snacks, food...", "incomeAccount": "7360", "descriptionPrefix": "Mat" },
-  { "id": 2, "name": "Office supplies", "incomeAccount": "6800", "descriptionPrefix": "Kontorrekvisita" },
-  { "id": 3, "name": "Hardware", "incomeAccount": "6551", "descriptionPrefix": "Hardware" },
-  { "id": 4, "name": "Software", "incomeAccount": "6553", "descriptionPrefix": "Programvare" },
-  { "id": -1, "name": "Other... Whatever... Papasan?", "incomeAccount": "7799", "descriptionPrefix": "Other" }
-]

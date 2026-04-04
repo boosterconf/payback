@@ -6,13 +6,11 @@ export type User = {
 };
 
 export type RelatedToOption = {
-	id: number;
 	name: string;
 	projectId: number;
 };
 
 export type ExpenseType = {
-	id: number;
 	name: string;
 	incomeAccount: string;
 	descriptionPrefix: string;

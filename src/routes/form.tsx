@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { handleUpload } from "@vercel/blob/client";
-import relatedToOptions from "../data/related-to-options.json" with { type: "json" };
-import expenseTypes from "../data/expense-types.json" with { type: "json" };
+import { relatedToOptions } from "../data/related-to-options";
+import { expenseTypes } from "../data/expense-types";
 import { submitReceipt } from "../services/fiken";
 import { FormPage, SuccessPage, ErrorPage } from "../pages";
 import { requireUser } from "../middleware";
@@ -44,23 +44,24 @@ form.post("/submit", requireUser, async (c) => {
   const body = await c.req.json();
   const { relatedTo, expenseType, description, amount, receiptUrl } = body as Record<string, string>;
 
-  const validRelatedToIds = relatedToOptions.map((s) => String(s.id));
-  const validExpenseTypeIds = expenseTypes.map((t) => String(t.id));
-
   if (typeof relatedTo !== "string" || typeof expenseType !== "string" || typeof receiptUrl !== "string") {
     throw new HTTPException(400, { message: "All fields are required." });
   }
-  if (!validRelatedToIds.includes(relatedTo)) {
+
+  const validRelatedToIdx = parseInt(relatedTo);
+  const validExpenseTypeIdx = parseInt(expenseType);
+
+  if (!Number.isInteger(validRelatedToIdx) || validRelatedToIdx < 0 || validRelatedToIdx >= relatedToOptions.length) {
     throw new HTTPException(400, { message: "Invalid selection." });
   }
-  if (!validExpenseTypeIds.includes(expenseType)) {
+  if (!Number.isInteger(validExpenseTypeIdx) || validExpenseTypeIdx < 0 || validExpenseTypeIdx >= expenseTypes.length) {
     throw new HTTPException(400, { message: "Invalid expense type." });
   }
   if (!receiptUrl.includes(".blob.vercel-storage.com/")) {
     throw new HTTPException(400, { message: "Invalid receipt URL." });
   }
 
-  const selectedExpenseType = expenseTypes.find((t) => String(t.id) === expenseType);
+  const selectedExpenseType = expenseTypes[validExpenseTypeIdx]!;
   const parsedAmount = parseFloat(amount || "");
   const grossAmount = Number.isFinite(parsedAmount) && parsedAmount > 0 ? Math.round(parsedAmount * 100) : 0;
 
