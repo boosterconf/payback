@@ -410,5 +410,7 @@ body:has(.user-bubble)::after {
 }
 
 pwa-install {
-  display: contents;
+  position: fixed;
+  width: 0;
+  height: 0;
 }
