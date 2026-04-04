@@ -12,7 +12,7 @@ export const LoginPage: FC = () => (
   <Layout>
     <img src="/money.gif" alt="Money" class="login-gif" />
     <a href="/auth/login" class="btn btn-booster">
-      Sign in with <BoosterIcon />
+      Sign in with <BoosterIcon /> slack
     </a>
   </Layout>
 );

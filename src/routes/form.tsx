@@ -1,7 +1,8 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { handleUpload } from "@vercel/blob/client";
-import { getFormOptions } from "../services/db";
+import relatedToOptions from "../data/related-to-options.json";
+import expenseTypes from "../data/expense-types.json";
 import { submitReceipt } from "../services/fiken";
 import { FormPage, SuccessPage, ErrorPage } from "../pages";
 import { requireUser } from "../middleware";
@@ -9,8 +10,7 @@ import type { Env } from "../types";
 
 const form = new Hono<Env>();
 
-form.get("/", requireUser, async (c) => {
-  const { relatedToOptions, expenseTypes } = await getFormOptions();
+form.get("/", requireUser, (c) => {
   return c.html(<FormPage user={c.get("user")} relatedToOptions={relatedToOptions} expenseTypes={expenseTypes} />);
 });
 
@@ -33,7 +33,6 @@ form.post("/upload/handle", requireUser, async (c) => {
       maximumSizeInBytes: 25 * 1024 * 1024,
       addRandomSuffix: true,
     }),
-    onUploadCompleted: async () => {},
   });
 
   return c.json(jsonResponse);
@@ -45,7 +44,6 @@ form.post("/submit", requireUser, async (c) => {
   const body = await c.req.json();
   const { relatedTo, expenseType, description, amount, receiptUrl } = body as Record<string, string>;
 
-  const { relatedToOptions, expenseTypes } = await getFormOptions();
   const validRelatedToIds = relatedToOptions.map((s) => String(s.id));
   const validExpenseTypeIds = expenseTypes.map((t) => String(t.id));
 

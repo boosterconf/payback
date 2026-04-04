@@ -1,0 +1,10 @@
+[
+  { "id": 0, "name": "Comitee meetings", "projectId": 1 },
+  { "id": 1, "name": "Social gatherings", "projectId": 2 },
+  { "id": 2, "name": "Conference dinner", "projectId": 3 },
+  { "id": 3, "name": "Speakers dinner", "projectId": 4 },
+  { "id": 4, "name": "Afterparty", "projectId": 5 },
+  { "id": 5, "name": "Main Conference", "projectId": 6 },
+  { "id": 6, "name": "Booster Kids", "projectId": 7 },
+  { "id": -1, "name": "Not sure / whatever / leave me alone...", "projectId": 0 }
+]

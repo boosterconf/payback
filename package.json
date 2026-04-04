@@ -14,7 +14,6 @@
     "typescript": "^6.0.2"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.0.2",
     "@vercel/blob": "^2.3.3",
     "hono": "^4.12.10"
   }

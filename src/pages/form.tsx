@@ -1,6 +1,5 @@
 import type { FC } from "hono/jsx";
-import type { User } from "../types";
-import type { RelatedToOption, ExpenseType } from "../services/db";
+import type { User, RelatedToOption, ExpenseType } from "../types";
 import { Layout } from "./layout";
 
 export const FormPage: FC<{
