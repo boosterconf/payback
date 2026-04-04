@@ -9,3 +9,6 @@ if (!result.success) {
   for (const log of result.logs) console.error(log);
   process.exit(1);
 }
+else {
+  console.log("Built blob-client.js");
+}

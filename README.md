@@ -25,6 +25,6 @@ bun run dev
 2. Build the Vercel Blob client
 3. Start the server with hot reload at `http://localhost:3000`
 
-Local development bypasses Slack login and signs you in automatically as a hardcoded dev user.
+Local development bypasses Slack login and signs you in automatically as a hardcoded dev user. Slack OAuth doesn't support `http` on `localhost` callback URLs, unlike sensible companies.
 
 Environment variables are managed via Vercel. After linking the project (`vercel link`), `bun run dev` pulls them automatically.
