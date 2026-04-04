@@ -1,6 +1,9 @@
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
-import { admin, auth, cron, form } from "./routes";
+import { admin } from "./routes/admin";
+import { auth } from "./routes/auth";
+import { cron } from "./routes/cron";
+import { form } from "./routes/form";
 import { notFound, onError } from "./middleware";
 
 const app = new Hono();
