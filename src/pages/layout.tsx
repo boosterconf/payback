@@ -2,11 +2,11 @@ import type { FC, PropsWithChildren } from "hono/jsx";
 import type { User } from "../types";
 import { readdir } from "node:fs/promises";
 
-const gifs = (await readdir(new URL("../../public", import.meta.url)))
-  .filter((f) => f.endsWith(".gif"))
-  .map((f) => `/${f}`);
-
-export const Layout: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
+export const Layout: FC<PropsWithChildren<{ user?: User }>> = async ({ user, children }) => {
+  const gifs = (await readdir(new URL("../../public", import.meta.url)))
+    .filter((f) => f.endsWith(".gif"))
+    .map((f) => `/${f}`);
+  return (
   <html lang="en">
     <head>
       <meta charset="utf-8" />
@@ -41,4 +41,5 @@ export const Layout: FC<PropsWithChildren<{ user?: User }>> = ({ user, children 
       />
     </body>
   </html>
-);
+  );
+};
