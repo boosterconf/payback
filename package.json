@@ -3,10 +3,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "echo 'No build step'",
+    "build": "bun build node_modules/@vercel/blob/dist/client.js --outfile=public/blob-client.js --minify",
     "check": "tsc --noEmit",
-    "dev": "vercel env pull --yes && DEV_USER=true bun --env-file=.env.local --hot src/server.ts",
-    "bundle:blob": "bun build node_modules/@vercel/blob/dist/client.js --outfile=public/blob-client.js --minify"
+    "dev": "vercel env pull --yes && bun run build && DEV_USER=true bun --env-file=.env.local --hot src/server.ts"
   },
   "devDependencies": {
     "@tsconfig/bun": "^1.0.10",

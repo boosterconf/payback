@@ -5,3 +5,4 @@ node_modules
 .DS_Store
 .env*.local
 tmp.swKUPXSk1t/
+public/blob-client.js

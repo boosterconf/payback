@@ -1,12 +1,7 @@
 import type { FC, PropsWithChildren } from "hono/jsx";
 import type { User } from "../types";
-import { readdir } from "node:fs/promises";
 
-export const Layout: FC<PropsWithChildren<{ user?: User }>> = async ({ user, children }) => {
-  const gifs = (await readdir(new URL("../../public", import.meta.url)))
-    .filter((f) => f.endsWith(".gif"))
-    .map((f) => `/${f}`);
-  return (
+export const Layout: FC<PropsWithChildren<{ user?: User }>> = ({ user, children }) => (
   <html lang="en">
     <head>
       <meta charset="utf-8" />
@@ -19,7 +14,13 @@ export const Layout: FC<PropsWithChildren<{ user?: User }>> = async ({ user, chi
       <meta name="apple-mobile-web-app-title" content="Payback" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <link rel="stylesheet" href="/styles.css" />
-      {gifs.map((gif) => <link rel="prefetch" href={gif} as="image" />)}
+      <link rel="prefetch" href="/admin.gif" as="image" />
+      <link rel="prefetch" href="/bye.gif" as="image" />
+      <link rel="prefetch" href="/error.gif" as="image" />
+      <link rel="prefetch" href="/money.gif" as="image" />
+      <link rel="prefetch" href="/nope.gif" as="image" />
+      <link rel="prefetch" href="/notfound.gif" as="image" />
+      <link rel="prefetch" href="/powerball.gif" as="image" />
     </head>
     <body>
       <div class="container">{children}</div>
@@ -41,5 +42,4 @@ export const Layout: FC<PropsWithChildren<{ user?: User }>> = async ({ user, chi
       />
     </body>
   </html>
-  );
-};
+);

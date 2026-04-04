@@ -27,7 +27,7 @@ auth.get("/login", async (c) => {
       "id": "dev",
       "name": "Development User",
       "avatar": "/fallback-profile.png",
-      "fikenContactId": 11834020280
+      "fikenContactId": 11854322793
     };
     await setSessionUser(c, devUser);
     return c.redirect("/");
