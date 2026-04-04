@@ -7,13 +7,13 @@ const COOKIE_NAME = "session";
 const OAUTH_STATE_COOKIE = "oauth_state";
 const COOKIE_OPTIONS = { path: "/" } as const;
 
-export async function getSessionUser(c: Context): Promise<User | null> {
+export async function getSessionUser(c: Context): Promise<User | undefined> {
   const raw = await getSignedCookie(c, config.COOKIE_SECRET, COOKIE_NAME);
-  if (!raw) return null;
+  if (!raw) return undefined;
   try {
     return JSON.parse(raw) as User;
   } catch {
-    return null;
+    return undefined;
   }
 }
 
