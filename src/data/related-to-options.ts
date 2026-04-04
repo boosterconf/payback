@@ -1,7 +1,7 @@
 import type { RelatedToOption } from "../types";
 
 export const relatedToOptions: RelatedToOption[] = [
-  { projectId:  1, name: "Comitee meetings" },
+  { projectId:  1, name: "Committee meetings" },
   { projectId: 12, name: "Social gatherings" },
   { projectId:  6, name: "Conference dinner" },
   { projectId:  8, name: "Speakers dinner" },
