@@ -2,7 +2,25 @@ node_modules
 .vercel
 .env
 .env.local
-.DS_Store
 .env*.local
-tmp.swKUPXSk1t/
 public/blob-client.js
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+*~
+.fuse_hidden*
+.nfs*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
