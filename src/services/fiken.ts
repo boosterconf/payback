@@ -46,7 +46,6 @@ export async function getContactIdByEmail(email: string): Promise<number | null>
   const contacts = (await res.json()) as { contactId: number }[];
   if (contacts.length === 0) return null;
   if (contacts.length > 1) console.warn(`Multiple Fiken contacts found for email ${email}, using first match`);
-  console.log(contacts[0]!);
   return contacts[0]!.contactId;
 }
 
