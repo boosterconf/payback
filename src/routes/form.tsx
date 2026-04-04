@@ -48,25 +48,27 @@ form.post("/submit", requireUser, async (c) => {
     throw new HTTPException(400, { message: "All fields are required." });
   }
 
-  const validRelatedToIdx = parseInt(relatedTo);
-  const validExpenseTypeIdx = parseInt(expenseType);
+  const relatedToIndex = parseInt(relatedTo);
+  const expenseTypeIndex = parseInt(expenseType);
 
-  if (!Number.isInteger(validRelatedToIdx) || validRelatedToIdx < 0 || validRelatedToIdx >= relatedToOptions.length) {
+  if (!Number.isInteger(relatedToIndex) || relatedToIndex < 0 || relatedToIndex >= relatedToOptions.length) {
     throw new HTTPException(400, { message: "Invalid selection." });
   }
-  if (!Number.isInteger(validExpenseTypeIdx) || validExpenseTypeIdx < 0 || validExpenseTypeIdx >= expenseTypes.length) {
+  if (!Number.isInteger(expenseTypeIndex) || expenseTypeIndex < 0 || expenseTypeIndex >= expenseTypes.length) {
     throw new HTTPException(400, { message: "Invalid expense type." });
   }
   if (!receiptUrl.includes(".blob.vercel-storage.com/")) {
     throw new HTTPException(400, { message: "Invalid receipt URL." });
   }
 
-  const selectedExpenseType = expenseTypes[validExpenseTypeIdx]!;
+  const selectedRelatedTo = relatedToOptions[relatedToIndex]!;
+  const selectedExpenseType = expenseTypes[expenseTypeIndex]!;
   const parsedAmount = parseFloat(amount || "");
   const grossAmount = Number.isFinite(parsedAmount) && parsedAmount > 0 ? Math.round(parsedAmount * 100) : 0;
 
   const draftId = await submitReceipt({
     contactId: user.fikenContactId,
+    projectId: selectedRelatedTo.projectId,
     incomeAccount: selectedExpenseType!.incomeAccount || "7799",
     description: `${selectedExpenseType!.descriptionPrefix}: ${description || ""}`.trim(),
     grossAmount,

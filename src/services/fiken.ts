@@ -16,6 +16,7 @@ interface PurchaseDraft {
   cash: boolean;
   paid: boolean;
   contactId: number;
+  projectId?: number;
   lines: PurchaseDraftLine[];
   invoiceIssueDate?: string;
   currency?: string;
@@ -75,6 +76,7 @@ async function addAttachmentToDraft(draftId: number, filename: string, blob: Blo
 
 interface SubmitReceiptParams {
   contactId: number;
+  projectId?: number;
   incomeAccount: string;
   description: string;
   grossAmount: number;
@@ -87,6 +89,7 @@ export async function submitReceipt(params: SubmitReceiptParams): Promise<number
     cash: false,
     paid: false,
     contactId: params.contactId,
+    projectId: params.projectId,
     invoiceIssueDate: new Date().toISOString().split("T")[0],
     lines: [
       {
