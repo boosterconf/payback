@@ -3,7 +3,6 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "postinstall": "cp test.txt public/",
     "build": ":",
     "check": "tsc --noEmit",
     "dev": "bun --bun scripts/local-dev.ts"
