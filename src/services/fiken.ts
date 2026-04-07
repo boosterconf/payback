@@ -84,7 +84,8 @@ interface SubmitReceiptParams {
 
 /** Create a Fiken purchase draft with the receipt attached. Returns the draft ID. */
 export async function submitReceipt(params: SubmitReceiptParams): Promise<number> {
-  const draftId = await createPurchaseDraft({
+  
+  const draft = {
     cash: false,
     paid: false,
     contactId: params.contactId,
@@ -99,7 +100,11 @@ export async function submitReceipt(params: SubmitReceiptParams): Promise<number
         gross: params.grossAmount,
       },
     ],
-  });
+  };
+
+  console.log(draft);
+  
+  const draftId = await createPurchaseDraft(draft);
 
   // Download the receipt from Vercel Blob (private store requires token)
   const result = await get(params.receiptUrl, { access: "private" });
